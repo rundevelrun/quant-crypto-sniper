@@ -1,5 +1,6 @@
 import unittest
 
+from quant_crypto_sniper.dashboard import public_state, render_dashboard
 from quant_crypto_sniper.risk import position_notional_krw
 from quant_crypto_sniper.strategy import Candle, trend_signal
 
@@ -28,6 +29,25 @@ class StrategyTests(unittest.TestCase):
             position_notional_krw(20_000, 20_000, 100, 90),
             0,
         )
+
+    def test_public_dashboard_omits_sensitive_account_values(self):
+        state = {
+            "status": "running",
+            "total_exposure_pct": "15.0%",
+            "total_assets_krw": 100_000,
+            "krw_balance": 85_000,
+            "api_secret": "never-publish",
+            "markets": [{
+                "market": "KRW-BTC", "signal": "현금",
+                "coin_quantity": 0.123, "position_exposure_pct": "0.0%",
+            }],
+        }
+        safe = public_state(state)
+        markdown = render_dashboard(state)
+        self.assertNotIn("total_assets_krw", safe)
+        self.assertNotIn("coin_quantity", safe["markets"][0])
+        self.assertNotIn("never-publish", markdown)
+        self.assertIn("금액 비공개", markdown)
 
 
 if __name__ == "__main__":
