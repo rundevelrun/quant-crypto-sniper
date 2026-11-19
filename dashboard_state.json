@@ -1,0 +1,12 @@
+{
+  "status": "starting",
+  "detail": "실거래 미연결 · 초기 구조 준비 완료",
+  "rest_connected": false,
+  "websocket_connected": false,
+  "kill_switch": false,
+  "total_exposure_pct": "0.0%",
+  "markets": [
+    {"market": "KRW-BTC", "signal": "현금", "blocker": "시세 수집기 미구현"},
+    {"market": "KRW-ETH", "signal": "현금", "blocker": "시세 수집기 미구현"}
+  ]
+}
